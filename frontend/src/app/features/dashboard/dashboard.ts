@@ -2,7 +2,6 @@ import { DecimalPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LeaderboardService } from '../../core/api/leaderboard.service';
-import { MembershipService } from '../../core/api/membership.service';
 import { StepsService } from '../../core/api/steps.service';
 import { AuthService } from '../../core/auth/auth.service';
 import {
@@ -10,12 +9,13 @@ import {
   StepEntry,
   StepSummary,
 } from '../../core/models';
+import { Payment } from '../membership/payment';
 
 const STEPS_PER_KM = 1250;
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ReactiveFormsModule, DecimalPipe],
+  imports: [ReactiveFormsModule, DecimalPipe, Payment],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -23,7 +23,6 @@ export class Dashboard implements OnInit {
   private readonly auth = inject(AuthService);
   private readonly stepsApi = inject(StepsService);
   private readonly boardApi = inject(LeaderboardService);
-  private readonly membershipApi = inject(MembershipService);
   private readonly fb = inject(FormBuilder);
 
   readonly user = this.auth.currentUser;
@@ -33,7 +32,6 @@ export class Dashboard implements OnInit {
   readonly history = signal<StepEntry[]>([]);
   readonly leaderboard = signal<LeaderboardResponse | null>(null);
 
-  readonly activating = signal(false);
   readonly savingSteps = signal(false);
   readonly stepError = signal<string | null>(null);
 
@@ -55,16 +53,9 @@ export class Dashboard implements OnInit {
     return Math.round((steps / STEPS_PER_KM) * 10) / 10;
   }
 
-  activate(): void {
-    this.activating.set(true);
-    this.membershipApi.activate().subscribe({
-      next: () =>
-        this.auth.loadProfile().subscribe(() => {
-          this.activating.set(false);
-          this.loadMemberData();
-        }),
-      error: () => this.activating.set(false),
-    });
+  /** Called by the payment prototype once membership becomes active. */
+  onPaid(): void {
+    this.loadMemberData();
   }
 
   logSteps(): void {

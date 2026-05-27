@@ -6,23 +6,32 @@
     referrerpolicy="no-referrer"
   />
   <div class="hero-overlay">
-    <h1>Move for <span>Special Olympics Belgium</span></h1>
+    <p class="eyebrow">Special Olympics Belgium</p>
+    <h1>Turn your everyday steps into real impact</h1>
     <p class="lead">
-      Turn everyday steps into real impact for SOB athletes &mdash; for just
-      &euro;9.99 / month.
+      Become a supporter and help fund equipment, coaching and events for SOB
+      athletes &mdash; for &euro;9.99 per month.
     </p>
     <div class="cta">
-      <a routerLink="/register" class="btn-primary">Become a supporter</a>
+      <a routerLink="/login" class="btn-primary">Become a supporter</a>
       <a routerLink="/login" class="btn-ghost">Log in</a>
     </div>
   </div>
 </section>
 
-<section class="events">
-  <h2>SOB events</h2>
-  <p class="section-sub">
-    Upcoming happenings from Special Olympics Belgium.
+<section class="intro">
+  <h2>Support that moves</h2>
+  <p>
+    As a supporter you track your daily activity, climb the leaderboards with
+    fellow supporters, take on club challenges, and see exactly how your monthly
+    contribution helps Special Olympics Belgium athletes. To get started, log in
+    and become a supporter.
   </p>
+</section>
+
+<section class="events">
+  <h2>Events</h2>
+  <p class="section-sub">Upcoming happenings from Special Olympics Belgium.</p>
 
   <div class="event-grid">
     @for (e of events; track e.title) {
@@ -39,7 +48,7 @@
           <h3>{{ e.title }}</h3>
           <p>{{ e.description }}</p>
           <a [href]="e.link" target="_blank" rel="noopener" class="event-link">
-            Learn more &rarr;
+            Learn more
           </a>
         </div>
       </article>
@@ -47,24 +56,10 @@
   </div>
 </section>
 
-<section class="tiers">
-  <div class="tier">
-    <h3>Free</h3>
-    <p class="price">&euro;0</p>
-    <ul>
-      <li>Program &amp; event information</li>
-      <li>Learn about SOB's mission</li>
-    </ul>
+<section class="cta-band">
+  <div>
+    <h2>Become a supporter</h2>
+    <p>Join for &euro;9.99 / month. Cancel anytime.</p>
   </div>
-  <div class="tier featured">
-    <h3>Supporter</h3>
-    <p class="price">&euro;9.99<span>/mo</span></p>
-    <ul>
-      <li>Step tracking &amp; streaks</li>
-      <li>Individual &amp; team leaderboards</li>
-      <li>Monthly challenges</li>
-      <li>Personal impact reports</li>
-    </ul>
-    <a routerLink="/register" class="btn-primary">Join now</a>
-  </div>
+  <a routerLink="/login" class="btn-primary">Get started</a>
 </section>

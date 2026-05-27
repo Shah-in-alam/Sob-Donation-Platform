@@ -17,9 +17,14 @@ export class App {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  /** Logged-in users go to their dashboard (to activate); guests sign up. */
+  /** Guests must log in to become a supporter; members go to their dashboard. */
   protected readonly supportLink = computed(() =>
-    this.auth.isAuthenticated() ? '/dashboard' : '/register',
+    this.auth.isAuthenticated() ? '/dashboard' : '/login',
+  );
+
+  /** Hide the call-to-action once the user is already an active supporter. */
+  protected readonly showSupport = computed(
+    () => this.auth.currentUser()?.membershipStatus !== 'active',
   );
 
   logout(): void {

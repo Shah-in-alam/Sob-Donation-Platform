@@ -21,6 +21,14 @@
 
 .muted { color: var(--muted); }
 
+.become {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  h3 { margin: 0 0 0.35rem; font-size: 1.6rem; }
+  .muted { max-width: 480px; margin: 0 auto 0.5rem; }
+}
+
 /* Summary stats */
 .stats {
   display: grid;

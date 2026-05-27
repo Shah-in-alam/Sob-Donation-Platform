@@ -24,7 +24,7 @@ export class Landing {
   readonly events: SobEvent[] = [
     {
       title: 'Jeux Nationaux 2026',
-      date: '2026 · Hautes Fagnes',
+      date: '2026 — Hautes Fagnes',
       description:
         "Les Jeux Nationaux de Special Olympics Belgium arrivent dans la région des Hautes Fagnes — des milliers d'athlètes en compétition dans de nombreux sports.",
       image:
@@ -33,9 +33,9 @@ export class Landing {
     },
     {
       title: 'Special Olympics Cycling Series 2026',
-      date: '2026 · Partout en Belgique',
+      date: '2026 — Partout en Belgique',
       description:
-        "Une initiative cycliste nationale qui met en lumière le talent et la détermination de nos athlètes.",
+        'Une initiative cycliste nationale qui met en lumière le talent et la détermination de nos athlètes.',
       image:
         'https://special-olympics.be/wp-content/uploads/2026/03/CYCLING-SERIES-RGB.jpg',
       link: 'https://cyclingseries.special-olympics.be/fr/',

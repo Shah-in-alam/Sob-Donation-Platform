@@ -1,5 +1,8 @@
 <header class="topbar">
-  <a class="brand" routerLink="/">SOB <span>Supporters</span></a>
+  <a class="brand" routerLink="/">
+    <img src="sob-logo.png" alt="Special Olympics Belgium" class="brand-logo" />
+    <span class="brand-text">Supporters</span>
+  </a>
   <nav>
     <a
       routerLink="/"
@@ -12,7 +15,7 @@
       <button type="button" class="link-btn" (click)="logout()">Log out</button>
     } @else {
       <a routerLink="/login" routerLinkActive="active">Log in</a>
-      <a routerLink="/register" class="btn-primary nav-cta">Join</a>
+      <a routerLink="/login" class="btn-primary nav-cta">Become a supporter</a>
     }
   </nav>
 </header>
@@ -21,6 +24,11 @@
   <router-outlet />
 </main>
 
-<a [routerLink]="supportLink()" class="support-fab" aria-label="Support SOB">
-  💚 Support
-</a>
+@if (showSupport()) {
+  <a
+    [routerLink]="supportLink()"
+    class="support-fab"
+    aria-label="Become a supporter"
+    >Support</a
+  >
+}

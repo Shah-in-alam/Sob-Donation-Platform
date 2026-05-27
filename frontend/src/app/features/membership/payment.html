@@ -1,0 +1,47 @@
+<div class="checkout">
+  <aside class="checkout-summary">
+    <h3>Supporter membership</h3>
+    <p class="amount">&euro;9.99 <span>/ month</span></p>
+    <ul>
+      <li>Step tracking and streaks</li>
+      <li>Individual and team leaderboards</li>
+      <li>Monthly challenges</li>
+      <li>Personal impact reports</li>
+    </ul>
+    <p class="cancel">Cancel anytime.</p>
+  </aside>
+
+  <form class="checkout-form" [formGroup]="form" (ngSubmit)="pay()">
+    <p class="demo-note">Demo checkout — this is a prototype and no real payment is processed.</p>
+
+    @if (error()) {
+      <div class="alert">{{ error() }}</div>
+    }
+
+    <label>
+      Cardholder name
+      <input type="text" formControlName="cardName" placeholder="Name on card" autocomplete="cc-name" />
+    </label>
+
+    <label>
+      Card number
+      <input type="text" formControlName="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="cc-number" />
+    </label>
+
+    <div class="row">
+      <label>
+        Expiry
+        <input type="text" formControlName="expiry" placeholder="MM/YY" autocomplete="cc-exp" />
+      </label>
+      <label>
+        CVC
+        <input type="text" formControlName="cvc" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
+      </label>
+    </div>
+
+    <button type="submit" class="btn-primary pay-btn" [disabled]="processing()">
+      {{ processing() ? 'Processing…' : 'Pay €9.99' }}
+    </button>
+    <p class="secure">Secured payment</p>
+  </form>
+</div>

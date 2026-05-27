@@ -1,6 +1,6 @@
 @if (user(); as u) {
   <section class="welcome">
-    <h2>Hi {{ u.name }} 👋</h2>
+    <h2>Welcome, {{ u.name }}</h2>
     <p class="club">
       @if (u.favoriteClub) {
         Supporting <strong>{{ u.favoriteClub.name }}</strong>
@@ -11,20 +11,15 @@
   </section>
 
   @if (!isMember()) {
-    <div class="membership-banner">
-      <div>
-        <strong>Your membership is {{ u.membershipStatus }}.</strong>
-        <span>
-          Activate your &euro;9.99/month supporter membership to unlock step
-          tracking, streaks and leaderboards.
-        </span>
-      </div>
-      <button class="btn-primary" (click)="activate()" [disabled]="activating()">
-        {{ activating() ? 'Activating…' : 'Activate membership' }}
-      </button>
-    </div>
+    <section class="become">
+      <h3>Become a supporter</h3>
+      <p class="muted">
+        Activate your &euro;9.99/month membership to unlock step tracking,
+        streaks and leaderboards.
+      </p>
+      <app-payment (paid)="onPaid()" />
+    </section>
   } @else {
-    <!-- Summary stats -->
     @if (summary(); as s) {
       <section class="stats">
         <div class="stat">
@@ -34,7 +29,7 @@
           <span class="value">{{ s.totalSteps | number }}</span><span class="label">steps</span>
         </div>
         <div class="stat">
-          <span class="value">🔥 {{ s.currentStreak }}</span><span class="label">day streak</span>
+          <span class="value">{{ s.currentStreak }}</span><span class="label">day streak</span>
         </div>
         <div class="stat">
           <span class="value">{{ s.longestStreak }}</span><span class="label">longest streak</span>
@@ -46,9 +41,8 @@
     }
 
     <div class="columns">
-      <!-- Log steps + history -->
       <section class="panel">
-        <h3>👟 Log your steps</h3>
+        <h3>Log your steps</h3>
         @if (stepError()) { <div class="alert">{{ stepError() }}</div> }
         <form class="steps-form" [formGroup]="form" (ngSubmit)="logSteps()">
           <label>
@@ -83,9 +77,8 @@
         }
       </section>
 
-      <!-- Leaderboard -->
       <section class="panel">
-        <h3>🏆 Individual leaderboard</h3>
+        <h3>Individual leaderboard</h3>
         @if (leaderboard(); as board) {
           @if (board.me) {
             <p class="your-rank">
@@ -107,16 +100,16 @@
               }
             </ol>
           } @else {
-            <p class="muted">No rankings yet. Be the first to log steps!</p>
+            <p class="muted">No rankings yet. Be the first to log steps.</p>
           }
         }
       </section>
     </div>
 
     <section class="grid upcoming">
-      <article class="tile"><h3>🤝 Team challenges</h3><p>Coming soon</p></article>
-      <article class="tile"><h3>📣 SOB updates</h3><p>Coming soon</p></article>
-      <article class="tile"><h3>📊 Impact reports</h3><p>Coming soon</p></article>
+      <article class="tile"><h3>Team challenges</h3><p>Coming soon</p></article>
+      <article class="tile"><h3>SOB updates</h3><p>Coming soon</p></article>
+      <article class="tile"><h3>Impact reports</h3><p>Coming soon</p></article>
     </section>
   }
 } @else {
