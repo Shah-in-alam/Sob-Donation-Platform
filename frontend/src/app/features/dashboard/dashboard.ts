@@ -1,85 +1,151 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LeaderboardService } from '../../core/api/leaderboard.service';
-import { StepsService } from '../../core/api/steps.service';
+import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/auth/auth.service';
-import {
-  LeaderboardResponse,
-  StepEntry,
-  StepSummary,
-} from '../../core/models';
 
-const STEPS_PER_KM = 1250;
+export type Tab = 'steps' | 'leaderboard' | 'impact' | 'updates';
+
+export interface LeaderboardEntry {
+  rank: number;
+  name: string;
+  club: string;
+  km: number;
+  steps: number;
+  isMe?: boolean;
+}
+
+export interface ImpactMonth {
+  month: string;
+  amount: number;
+  items: string[];
+}
+
+export interface Update {
+  title: string;
+  date: string;
+  summary: string;
+  image: string;
+  tag: string;
+}
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ReactiveFormsModule, DecimalPipe],
+  imports: [DecimalPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
+export class Dashboard {
   private readonly auth = inject(AuthService);
-  private readonly stepsApi = inject(StepsService);
-  private readonly boardApi = inject(LeaderboardService);
-  private readonly fb = inject(FormBuilder);
-
-  // Reaching this page means the membership guard already confirmed an
-  // active supporter, so member data can be loaded right away.
   readonly user = this.auth.currentUser;
 
-  readonly summary = signal<StepSummary | null>(null);
-  readonly history = signal<StepEntry[]>([]);
-  readonly leaderboard = signal<LeaderboardResponse | null>(null);
+  readonly activeTab = signal<Tab>('steps');
+  readonly weekExpanded = signal(false);
 
-  readonly savingSteps = signal(false);
-  readonly stepError = signal<string | null>(null);
+  // ── Steps (hardcoded prototype) ──────────────────────
+  readonly todaySteps = 7200;
+  readonly dailyGoal = 10000;
+  readonly todayKm = (7200 / 1250).toFixed(1);
+  readonly progressPercent = Math.round((7200 / 10000) * 100);
+  readonly streak = 3;
+  readonly weeklySteps = [5400, 8100, 6200, 9300, 7200, 0, 0];
+  readonly weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  readonly weekMax = 10000;
+  readonly weekKm = this.weeklySteps.map(s => s > 0 ? (s / 1250).toFixed(1) : null);
 
-  readonly form = this.fb.nonNullable.group({
-    steps: [
-      null as number | null,
-      [Validators.required, Validators.min(1), Validators.max(200000)],
-    ],
-    date: [this.today(), [Validators.required]],
-  });
-
-  ngOnInit(): void {
-    this.loadMemberData();
+  // SVG ring — r=50, circumference ≈ 314
+  readonly ringCircumference = 314;
+  get ringOffset(): number {
+    return this.ringCircumference * (1 - this.progressPercent / 100);
   }
 
-  km(steps: number): number {
-    return Math.round((steps / STEPS_PER_KM) * 10) / 10;
+  // ── Leaderboard ──────────────────────────────────────
+  readonly leaderboard: LeaderboardEntry[] = [
+    { rank: 1, name: 'Emma V.',    club: 'Antwerp',  km: 42.3, steps: 52875 },
+    { rank: 2, name: 'Lucas D.',   club: 'Brussels', km: 38.1, steps: 47625 },
+    { rank: 3, name: 'Sophie M.',  club: 'Ghent',    km: 35.7, steps: 44625 },
+    { rank: 4, name: 'Thomas B.',  club: 'Liège',    km: 31.2, steps: 39000 },
+    { rank: 5, name: 'Marie L.',   club: 'Bruges',   km: 28.9, steps: 36125 },
+    { rank: 6, name: 'Nicolas P.', club: 'Leuven',   km: 26.4, steps: 33000 },
+    { rank: 7, name: 'You',        club: 'Antwerp',  km: 22.4, steps: 28000, isMe: true },
+    { rank: 8, name: 'Fatima B.',  club: 'Namur',    km: 19.8, steps: 24750 },
+    { rank: 9, name: 'Pieter V.',  club: 'Mechelen', km: 17.2, steps: 21500 },
+    { rank: 10, name: 'Julie D.',  club: 'Hasselt',  km: 14.6, steps: 18250 },
+  ];
+
+  medalIcon(rank: number): string {
+    if (rank === 1) return '🥇';
+    if (rank === 2) return '🥈';
+    if (rank === 3) return '🥉';
+    return '';
   }
 
-  logSteps(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    this.savingSteps.set(true);
-    this.stepError.set(null);
-    const { steps, date } = this.form.getRawValue();
+  // ── Impact ───────────────────────────────────────────
+  readonly impactMonths: ImpactMonth[] = [
+    {
+      month: 'May 2026', amount: 10,
+      items: [
+        'Training equipment for 10 athletes',
+        'Transport to 2 regional competitions',
+        'Medal ceremonies for 48 participants',
+      ],
+    },
+    {
+      month: 'April 2026', amount: 10,
+      items: [
+        'Sports shoes for 6 athletes in need',
+        'Venue rental for Ghent regional games',
+        'Coaching workshop for 12 volunteers',
+      ],
+    },
+    {
+      month: 'March 2026', amount: 10,
+      items: [
+        'Team jerseys for Antwerp Athletics',
+        'Healthy Athletes screening — 30 athletes',
+        'Swimming gear for 8 swimmers',
+      ],
+    },
+  ];
 
-    this.stepsApi.log(steps as number, date).subscribe({
-      next: () => {
-        this.savingSteps.set(false);
-        this.form.patchValue({ steps: null });
-        this.loadMemberData();
-      },
-      error: (err) => {
-        this.stepError.set(err?.error?.message ?? 'Could not save steps.');
-        this.savingSteps.set(false);
-      },
-    });
+  readonly totalDonated = (this.impactMonths.length * 10).toFixed(0);
+  readonly totalAthletes = 124;
+
+  // ── Updates ──────────────────────────────────────────
+  readonly updates: Update[] = [
+    {
+      title: 'Athletes travel to the World Games in Turin',
+      date: 'May 24, 2026',
+      summary: '18 Belgian athletes flew to Turin, Italy for the Special Olympics World Games. Supporters like you made this trip possible — covering travel, accommodation, and uniforms for every athlete on the team.',
+      image: '/trip.png',
+      tag: 'Trip',
+    },
+    {
+      title: 'National Games 2026 — Registration Open',
+      date: 'May 15, 2026',
+      summary: 'Over 3,000 athletes compete across 20+ sports at Hautes Fagnes this summer. Volunteer spots still available!',
+      image: 'https://special-olympics.be/wp-content/uploads/2021/03/%C2%A9GerbrandVanUytvanck_WSGAbuDhabi2019_SpecialOlympicsBelgium_140319_002.jpg',
+      tag: 'Event',
+    },
+    {
+      title: 'Cycling Series kicks off in Antwerp',
+      date: 'May 10, 2026',
+      summary: 'The 2026 Cycling Series opened with 120 participants. Sarah Janssen finished the 20 km route in record time.',
+      image: 'https://special-olympics.be/wp-content/uploads/2026/03/CYCLING-SERIES-RGB.jpg',
+      tag: 'Event',
+    },
+    {
+      title: 'Meet our new head coach: Jan Willems',
+      date: 'May 5, 2026',
+      summary: 'Jan brings 15 years of inclusive-sports experience. He joins SOB to lead the national athletics programme.',
+      image: 'https://special-olympics.be/wp-content/uploads/2022/02/%C2%A9GerbrandVanUytvanck_WSGAbuDhabi2019_SpecialOlympicsBelgium_170319_114.jpg',
+      tag: 'Team',
+    },
+  ];
+
+  setTab(tab: Tab): void {
+    this.activeTab.set(tab);
   }
 
-  private loadMemberData(): void {
-    this.stepsApi.summary().subscribe((s) => this.summary.set(s));
-    this.stepsApi.history().subscribe((h) => this.history.set(h));
-    this.boardApi.individual().subscribe((b) => this.leaderboard.set(b));
-  }
-
-  private today(): string {
-    return new Date().toISOString().slice(0, 10);
+  toggleWeek(): void {
+    this.weekExpanded.update(v => !v);
   }
 }

@@ -45,6 +45,10 @@ export class AuthService {
       .pipe(tap((user) => this.currentUser.set(user)));
   }
 
+  updateUser(user: User): void {
+    this.currentUser.set(user);
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     this.token.set(null);

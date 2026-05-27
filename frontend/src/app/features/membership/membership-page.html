@@ -2,9 +2,13 @@
   <p class="eyebrow">Special Olympics Belgium</p>
   <h1>Become a supporter</h1>
   <p class="lead">
-    Complete your &euro;9.99/month membership to unlock your supporter
+    Complete your &euro;10/month membership to unlock your supporter
     dashboard.
   </p>
 
   <app-payment (paid)="onPaid()" />
+
+  <p class="skip-hint">
+    <button type="button" class="link-btn" (click)="skip()">Skip for now</button>
+  </p>
 </section>

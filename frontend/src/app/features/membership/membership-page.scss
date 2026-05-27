@@ -20,4 +20,20 @@
     font-size: 1.1rem;
     margin: 0 0 1.5rem;
   }
+
+  .skip-hint {
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+
+    .link-btn {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 400;
+      text-decoration: underline;
+    }
+    .link-btn:hover {
+      color: var(--ink);
+    }
+  }
 }
