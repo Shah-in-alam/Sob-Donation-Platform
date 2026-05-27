@@ -1,0 +1,70 @@
+<section class="hero">
+  <img
+    class="hero-bg"
+    [src]="heroImage"
+    alt="Special Olympics Belgium athletes"
+    referrerpolicy="no-referrer"
+  />
+  <div class="hero-overlay">
+    <h1>Move for <span>Special Olympics Belgium</span></h1>
+    <p class="lead">
+      Turn everyday steps into real impact for SOB athletes &mdash; for just
+      &euro;9.99 / month.
+    </p>
+    <div class="cta">
+      <a routerLink="/register" class="btn-primary">Become a supporter</a>
+      <a routerLink="/login" class="btn-ghost">Log in</a>
+    </div>
+  </div>
+</section>
+
+<section class="events">
+  <h2>SOB events</h2>
+  <p class="section-sub">
+    Upcoming happenings from Special Olympics Belgium.
+  </p>
+
+  <div class="event-grid">
+    @for (e of events; track e.title) {
+      <article class="event-card">
+        <img
+          class="event-img"
+          [src]="e.image"
+          [alt]="e.title"
+          referrerpolicy="no-referrer"
+          loading="lazy"
+        />
+        <div class="event-body">
+          <span class="event-date">{{ e.date }}</span>
+          <h3>{{ e.title }}</h3>
+          <p>{{ e.description }}</p>
+          <a [href]="e.link" target="_blank" rel="noopener" class="event-link">
+            Learn more &rarr;
+          </a>
+        </div>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="tiers">
+  <div class="tier">
+    <h3>Free</h3>
+    <p class="price">&euro;0</p>
+    <ul>
+      <li>Program &amp; event information</li>
+      <li>Learn about SOB's mission</li>
+    </ul>
+  </div>
+  <div class="tier featured">
+    <h3>Supporter</h3>
+    <p class="price">&euro;9.99<span>/mo</span></p>
+    <ul>
+      <li>Step tracking &amp; streaks</li>
+      <li>Individual &amp; team leaderboards</li>
+      <li>Monthly challenges</li>
+      <li>Personal impact reports</li>
+    </ul>
+    <a routerLink="/register" class="btn-primary">Join now</a>
+  </div>
+</section>

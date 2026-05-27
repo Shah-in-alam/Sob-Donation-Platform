@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sob_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sob
+      POSTGRES_PASSWORD: sob_password
+      POSTGRES_DB: sob_platform
+    ports:
+      # Host 5432 is often taken by a local Postgres install, so expose on 5433.
+      - "5433:5432"
+    volumes:
+      - sob_pgdata:/var/lib/postgresql/data
+
+volumes:
+  sob_pgdata:

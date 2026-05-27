@@ -1,0 +1,26 @@
+<header class="topbar">
+  <a class="brand" routerLink="/">SOB <span>Supporters</span></a>
+  <nav>
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    @if (auth.isAuthenticated()) {
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <button type="button" class="link-btn" (click)="logout()">Log out</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Log in</a>
+      <a routerLink="/register" class="btn-primary nav-cta">Join</a>
+    }
+  </nav>
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>
+
+<a [routerLink]="supportLink()" class="support-fab" aria-label="Support SOB">
+  💚 Support
+</a>

@@ -1,0 +1,124 @@
+@if (user(); as u) {
+  <section class="welcome">
+    <h2>Hi {{ u.name }} 👋</h2>
+    <p class="club">
+      @if (u.favoriteClub) {
+        Supporting <strong>{{ u.favoriteClub.name }}</strong>
+      } @else {
+        No club selected yet
+      }
+    </p>
+  </section>
+
+  @if (!isMember()) {
+    <div class="membership-banner">
+      <div>
+        <strong>Your membership is {{ u.membershipStatus }}.</strong>
+        <span>
+          Activate your &euro;9.99/month supporter membership to unlock step
+          tracking, streaks and leaderboards.
+        </span>
+      </div>
+      <button class="btn-primary" (click)="activate()" [disabled]="activating()">
+        {{ activating() ? 'Activating…' : 'Activate membership' }}
+      </button>
+    </div>
+  } @else {
+    <!-- Summary stats -->
+    @if (summary(); as s) {
+      <section class="stats">
+        <div class="stat">
+          <span class="value">{{ s.totalKm }}</span><span class="label">km total</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ s.totalSteps | number }}</span><span class="label">steps</span>
+        </div>
+        <div class="stat">
+          <span class="value">🔥 {{ s.currentStreak }}</span><span class="label">day streak</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ s.longestStreak }}</span><span class="label">longest streak</span>
+        </div>
+        <div class="stat">
+          <span class="value">{{ s.daysLogged }}</span><span class="label">days logged</span>
+        </div>
+      </section>
+    }
+
+    <div class="columns">
+      <!-- Log steps + history -->
+      <section class="panel">
+        <h3>👟 Log your steps</h3>
+        @if (stepError()) { <div class="alert">{{ stepError() }}</div> }
+        <form class="steps-form" [formGroup]="form" (ngSubmit)="logSteps()">
+          <label>
+            Date
+            <input type="date" formControlName="date" />
+          </label>
+          <label>
+            Steps
+            <input type="number" formControlName="steps" min="0" placeholder="e.g. 8000" />
+          </label>
+          <button type="submit" class="btn-primary" [disabled]="savingSteps()">
+            {{ savingSteps() ? 'Saving…' : 'Save' }}
+          </button>
+        </form>
+
+        <h4>Recent days</h4>
+        @if (history().length) {
+          <table class="history">
+            <thead><tr><th>Date</th><th>Steps</th><th>km</th></tr></thead>
+            <tbody>
+              @for (e of history(); track e.id) {
+                <tr>
+                  <td>{{ e.date }}</td>
+                  <td>{{ e.steps | number }}</td>
+                  <td>{{ km(e.steps) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="muted">No steps logged yet — add your first day above.</p>
+        }
+      </section>
+
+      <!-- Leaderboard -->
+      <section class="panel">
+        <h3>🏆 Individual leaderboard</h3>
+        @if (leaderboard(); as board) {
+          @if (board.me) {
+            <p class="your-rank">
+              You are ranked <strong>#{{ board.me.rank }}</strong>
+              with {{ board.me.totalKm }} km
+            </p>
+          }
+          @if (board.top.length) {
+            <ol class="board">
+              @for (entry of board.top.slice(0, 10); track entry.userId) {
+                <li [class.me]="board.me && entry.userId === board.me.userId">
+                  <span class="rank">{{ entry.rank }}</span>
+                  <span class="name">
+                    {{ entry.name }}
+                    @if (entry.clubName) { <small>· {{ entry.clubName }}</small> }
+                  </span>
+                  <span class="km">{{ entry.totalKm }} km</span>
+                </li>
+              }
+            </ol>
+          } @else {
+            <p class="muted">No rankings yet. Be the first to log steps!</p>
+          }
+        }
+      </section>
+    </div>
+
+    <section class="grid upcoming">
+      <article class="tile"><h3>🤝 Team challenges</h3><p>Coming soon</p></article>
+      <article class="tile"><h3>📣 SOB updates</h3><p>Coming soon</p></article>
+      <article class="tile"><h3>📊 Impact reports</h3><p>Coming soon</p></article>
+    </section>
+  }
+} @else {
+  <p>Loading your profile…</p>
+}

@@ -1,0 +1,209 @@
+/* Global styles for the SOB Supporter Platform */
+
+:root {
+  --brand: #e2231a; /* Special Olympics red */
+  --brand-dark: #b71c15;
+  --ink: #1f2430;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f7f8fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Layout */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+
+  .brand {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--ink);
+    text-decoration: none;
+    span {
+      color: var(--brand);
+    }
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    a {
+      color: var(--ink);
+    }
+    a.active {
+      color: var(--brand);
+      font-weight: 600;
+    }
+    a.nav-cta,
+    a.nav-cta:hover {
+      color: #fff;
+    }
+  }
+}
+
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-block;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--brand-dark);
+  text-decoration: none;
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  color: var(--ink);
+  background: #fff;
+}
+.btn-ghost:hover {
+  text-decoration: none;
+  border-color: var(--brand);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+/* Auth cards & forms */
+.auth-card {
+  max-width: 420px;
+  margin: 2rem auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+
+  h2 {
+    margin: 0 0 0.25rem;
+  }
+  .sub {
+    color: var(--muted);
+    margin: 0 0 1.25rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  input,
+  select {
+    padding: 0.6rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  small {
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .switch {
+    margin-top: 1.25rem;
+    text-align: center;
+    color: var(--muted);
+  }
+}
+
+.alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Floating "Support" button, fixed in the bottom-right corner */
+.support-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.8rem 1.25rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(226, 35, 26, 0.35);
+  text-decoration: none;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+.support-fab:hover {
+  background: var(--brand-dark);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
