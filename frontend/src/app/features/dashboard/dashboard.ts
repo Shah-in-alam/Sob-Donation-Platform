@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LeaderboardService } from '../../core/api/leaderboard.service';
 import { StepsService } from '../../core/api/steps.service';
@@ -9,13 +9,12 @@ import {
   StepEntry,
   StepSummary,
 } from '../../core/models';
-import { Payment } from '../membership/payment';
 
 const STEPS_PER_KM = 1250;
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ReactiveFormsModule, DecimalPipe, Payment],
+  imports: [ReactiveFormsModule, DecimalPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -25,8 +24,9 @@ export class Dashboard implements OnInit {
   private readonly boardApi = inject(LeaderboardService);
   private readonly fb = inject(FormBuilder);
 
+  // Reaching this page means the membership guard already confirmed an
+  // active supporter, so member data can be loaded right away.
   readonly user = this.auth.currentUser;
-  readonly isMember = computed(() => this.user()?.membershipStatus === 'active');
 
   readonly summary = signal<StepSummary | null>(null);
   readonly history = signal<StepEntry[]>([]);
@@ -44,18 +44,11 @@ export class Dashboard implements OnInit {
   });
 
   ngOnInit(): void {
-    if (this.isMember()) {
-      this.loadMemberData();
-    }
+    this.loadMemberData();
   }
 
   km(steps: number): number {
     return Math.round((steps / STEPS_PER_KM) * 10) / 10;
-  }
-
-  /** Called by the payment prototype once membership becomes active. */
-  onPaid(): void {
-    this.loadMemberData();
   }
 
   logSteps(): void {

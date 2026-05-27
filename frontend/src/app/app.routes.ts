@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth/auth.guard';
+import { authGuard, membershipGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -18,8 +18,16 @@ export const routes: Routes = [
       import('./features/auth/register/register').then((m) => m.Register),
   },
   {
-    path: 'dashboard',
+    path: 'membership',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/membership/membership-page').then(
+        (m) => m.MembershipPage,
+      ),
+  },
+  {
+    path: 'dashboard',
+    canActivate: [authGuard, membershipGuard],
     loadComponent: () =>
       import('./features/dashboard/dashboard').then((m) => m.Dashboard),
   },

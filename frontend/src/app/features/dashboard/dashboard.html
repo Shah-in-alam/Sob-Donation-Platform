@@ -10,18 +10,8 @@
     </p>
   </section>
 
-  @if (!isMember()) {
-    <section class="become">
-      <h3>Become a supporter</h3>
-      <p class="muted">
-        Activate your &euro;9.99/month membership to unlock step tracking,
-        streaks and leaderboards.
-      </p>
-      <app-payment (paid)="onPaid()" />
-    </section>
-  } @else {
-    @if (summary(); as s) {
-      <section class="stats">
+  @if (summary(); as s) {
+    <section class="stats">
         <div class="stat">
           <span class="value">{{ s.totalKm }}</span><span class="label">km total</span>
         </div>
@@ -111,7 +101,6 @@
       <article class="tile"><h3>SOB updates</h3><p>Coming soon</p></article>
       <article class="tile"><h3>Impact reports</h3><p>Coming soon</p></article>
     </section>
-  }
 } @else {
   <p>Loading your profile…</p>
 }

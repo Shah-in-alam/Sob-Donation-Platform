@@ -17,9 +17,9 @@ export class App {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
-  /** Guests must log in to become a supporter; members go to their dashboard. */
+  /** Guests log in first; logged-in non-members go to the payment page. */
   protected readonly supportLink = computed(() =>
-    this.auth.isAuthenticated() ? '/dashboard' : '/login',
+    this.auth.isAuthenticated() ? '/membership' : '/login',
   );
 
   /** Hide the call-to-action once the user is already an active supporter. */
