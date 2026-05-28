@@ -13,8 +13,12 @@
       athletes &mdash; for &euro;10 per month.
     </p>
     <div class="cta">
-      <a routerLink="/register" class="btn-primary">Become a supporter</a>
-      <a routerLink="/login" class="btn-ghost">Log in</a>
+      @if (auth.isAuthenticated()) {
+        <a routerLink="/dashboard" class="btn-primary">Go to dashboard</a>
+      } @else {
+        <a routerLink="/register" class="btn-primary">Become a supporter</a>
+        <a routerLink="/login" class="btn-ghost">Log in</a>
+      }
     </div>
   </div>
 </section>
@@ -56,10 +60,12 @@
   </div>
 </section>
 
-<section class="cta-band">
-  <div>
-    <h2>Become a supporter</h2>
-    <p>Join for &euro;10 / month. Cancel anytime.</p>
-  </div>
-  <a routerLink="/register" class="btn-primary">Get started</a>
-</section>
+@if (!auth.isAuthenticated()) {
+  <section class="cta-band">
+    <div>
+      <h2>Become a supporter</h2>
+      <p>Join for &euro;10 / month. Cancel anytime.</p>
+    </div>
+    <a routerLink="/register" class="btn-primary">Get started</a>
+  </section>
+}

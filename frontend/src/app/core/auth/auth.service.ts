@@ -22,8 +22,11 @@ export class AuthService {
 
   constructor() {
     // Restore the session on a hard refresh if a token is present.
+    // Only logout on 401 — network errors should not clear a valid token.
     if (this.token()) {
-      this.loadProfile().subscribe({ error: () => this.logout() });
+      this.loadProfile().subscribe({
+        error: (err) => { if (err.status === 401) this.logout(); },
+      });
     }
   }
 

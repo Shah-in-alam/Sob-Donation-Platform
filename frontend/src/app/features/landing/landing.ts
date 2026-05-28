@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/auth/auth.service';
 
 interface SobEvent {
   title: string;
@@ -16,6 +17,7 @@ interface SobEvent {
   styleUrl: './landing.scss',
 })
 export class Landing {
+  readonly auth = inject(AuthService);
   // Official Special Olympics Belgium photo (special-olympics.be).
   readonly heroImage =
     'https://special-olympics.be/wp-content/uploads/2021/03/%C2%A9GerbrandVanUytvanck_WSGAbuDhabi2019_SpecialOlympicsBelgium_140319_002.jpg';
