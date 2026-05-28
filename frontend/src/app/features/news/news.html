@@ -1,0 +1,21 @@
+<div class="page-shell">
+  <div class="page-header">
+    <h1 class="page-title">News</h1>
+    <p class="page-sub">Latest from Special Olympics Belgium</p>
+  </div>
+
+  <div class="news-grid">
+    @for (post of posts; track post.title) {
+      <article class="news-card">
+        <img class="news-img" [src]="post.image" [alt]="post.title"
+          referrerpolicy="no-referrer" loading="lazy" />
+        <div class="news-body">
+          <span class="news-tag">{{ post.tag }}</span>
+          <h2 class="news-title">{{ post.title }}</h2>
+          <p class="news-summary">{{ post.summary }}</p>
+          <span class="news-date">{{ post.date }}</span>
+        </div>
+      </article>
+    }
+  </div>
+</div>

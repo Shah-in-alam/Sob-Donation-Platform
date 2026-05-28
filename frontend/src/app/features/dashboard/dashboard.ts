@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/auth/auth.service';
 
-export type Tab = 'news' | 'events' | 'steps' | 'leaderboard' | 'impact';
+export type Tab = 'news' | 'events' | 'impact';
 
 export interface LeaderboardEntry {
   rank: number;

@@ -7,29 +7,26 @@
   />
   <div class="hero-overlay">
     <p class="eyebrow">Special Olympics Belgium</p>
-    <h1>Turn your everyday steps into real impact</h1>
+    <h1>Turn your support into real impact</h1>
     <p class="lead">
-      Become a supporter and help fund equipment, coaching and events for SOB
-      athletes &mdash; for &euro;10 per month.
+      Become a supporter and help fund equipment, coaching and events
+      for Special Olympics Belgium athletes.
     </p>
-    <div class="cta">
-      @if (auth.isAuthenticated()) {
-        <a routerLink="/dashboard" class="btn-primary">Go to dashboard</a>
-      } @else {
+    @if (!auth.isAuthenticated()) {
+      <div class="cta">
         <a routerLink="/register" class="btn-primary">Become a supporter</a>
-        <a routerLink="/login" class="btn-ghost">Log in</a>
-      }
-    </div>
+      </div>
+    }
   </div>
 </section>
 
 <section class="intro">
   <h2>Support that moves</h2>
   <p>
-    As a supporter you track your daily activity, climb the leaderboards with
-    fellow supporters, take on club challenges, and see exactly how your monthly
-    contribution helps Special Olympics Belgium athletes. To get started, log in
-    and become a supporter.
+    As a supporter you stay up to date with the latest news from Special Olympics
+    Belgium, discover upcoming events, and see exactly how your monthly
+    contribution makes a difference for athletes across Belgium.
+    Become a supporter and be part of the journey.
   </p>
 </section>
 
@@ -64,7 +61,7 @@
   <section class="cta-band">
     <div>
       <h2>Become a supporter</h2>
-      <p>Join for &euro;10 / month. Cancel anytime.</p>
+      <p>Join today and make a difference. Cancel anytime.</p>
     </div>
     <a routerLink="/register" class="btn-primary">Get started</a>
   </section>

@@ -26,10 +26,22 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'dashboard',
+    path: 'news',
     canActivate: [authGuard, membershipGuard],
     loadComponent: () =>
-      import('./features/dashboard/dashboard').then((m) => m.Dashboard),
+      import('./features/news/news').then((m) => m.NewsPage),
+  },
+  {
+    path: 'events',
+    canActivate: [authGuard, membershipGuard],
+    loadComponent: () =>
+      import('./features/events/events').then((m) => m.EventsPage),
+  },
+  {
+    path: 'impact',
+    canActivate: [authGuard, membershipGuard],
+    loadComponent: () =>
+      import('./features/impact/impact').then((m) => m.ImpactPage),
   },
   { path: '**', redirectTo: '' },
 ];

@@ -1,0 +1,41 @@
+<div class="page-shell">
+  <div class="page-header">
+    <h1 class="page-title">Impact</h1>
+    <p class="page-sub">Where your support goes</p>
+  </div>
+
+  <div class="impact-hero">
+    <div class="impact-stat">
+      <span class="impact-big">€{{ totalDonated }}</span>
+      <span class="impact-sub">Total contributed</span>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <span class="impact-big">{{ totalAthletes }}</span>
+      <span class="impact-sub">Athletes supported</span>
+    </div>
+  </div>
+
+  <p class="section-label">Monthly breakdown</p>
+
+  <div class="impact-list">
+    @for (m of impactMonths; track m.month) {
+      <div class="impact-card">
+        <div class="impact-card-head">
+          <span class="impact-month">{{ m.month }}</span>
+          <span class="impact-amount">€{{ m.amount }}</span>
+        </div>
+        <ul class="impact-items">
+          @for (item of m.items; track item) {
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              {{ item }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div>

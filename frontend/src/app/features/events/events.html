@@ -1,0 +1,85 @@
+<div class="page-shell">
+  <div class="page-header">
+    <h1 class="page-title">Events</h1>
+    <p class="page-sub">Upcoming from Special Olympics Belgium</p>
+  </div>
+
+  <div class="events-grid">
+    @for (event of events; track event.title) {
+      <article class="event-card" (click)="open(event)">
+        <img class="event-img" [src]="event.image" [alt]="event.title"
+          referrerpolicy="no-referrer" loading="lazy" />
+        <div class="event-body">
+          <div class="event-meta">
+            <span class="event-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              {{ event.date }}
+            </span>
+            <span class="event-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              {{ event.location }}
+            </span>
+          </div>
+          <h2 class="event-title">{{ event.title }}</h2>
+          <p class="event-desc">{{ event.description }}</p>
+          <span class="event-cta">View details →</span>
+        </div>
+      </article>
+    }
+  </div>
+</div>
+
+<!-- Detail popup -->
+@if (selectedEvent(); as ev) {
+  <div class="popup-backdrop" (click)="close()"></div>
+  <div class="popup" role="dialog">
+    <button class="popup-close" (click)="close()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <img class="popup-img" [src]="ev.image" [alt]="ev.title" referrerpolicy="no-referrer" />
+    <div class="popup-body">
+      <h2 class="popup-title">{{ ev.title }}</h2>
+      <div class="popup-chips">
+        <span class="event-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          {{ ev.date }}
+        </span>
+        <span class="event-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          {{ ev.location }}
+        </span>
+      </div>
+      <p class="popup-desc">{{ ev.description }}</p>
+      <div class="popup-divider"></div>
+      <p class="popup-stat-label">Event highlights</p>
+      <div class="popup-stats">
+        <div class="popup-stat">
+          <span class="popup-stat-val">3 000+</span>
+          <span class="popup-stat-sub">Athletes</span>
+        </div>
+        <div class="popup-stat">
+          <span class="popup-stat-val">20+</span>
+          <span class="popup-stat-sub">Sports</span>
+        </div>
+        <div class="popup-stat">
+          <span class="popup-stat-val">100+</span>
+          <span class="popup-stat-sub">Volunteers</span>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -11,7 +11,9 @@
       >Home</a
     >
     @if (auth.isAuthenticated()) {
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/news" routerLinkActive="active">News</a>
+      <a routerLink="/events" routerLinkActive="active">Events</a>
+      <a routerLink="/impact" routerLinkActive="active">Impact</a>
       <button type="button" class="link-btn" (click)="logout()">Log out</button>
     } @else {
       <a routerLink="/login" routerLinkActive="active">Log in</a>
