@@ -21,11 +21,16 @@ export class Payment {
   readonly error = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
+    amount: [10, [Validators.required, Validators.min(10)]],
     cardName: ['', [Validators.required, Validators.minLength(2)]],
     cardNumber: ['', [Validators.required, Validators.pattern(/^[0-9 ]{12,23}$/)]],
     expiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
     cvc: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
   });
+
+  get amount(): number {
+    return this.form.controls.amount.value || 10;
+  }
 
   pay(): void {
     if (this.form.invalid) {

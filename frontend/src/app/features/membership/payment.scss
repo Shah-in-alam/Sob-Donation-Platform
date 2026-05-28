@@ -78,6 +78,63 @@
     box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
   }
 
+  .amount-label {
+    .amount-input-wrap {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+
+      &:focus-within {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
+      }
+
+      .currency-prefix {
+        padding: 0.65rem 0.75rem;
+        background: var(--bg-alt);
+        border-right: 1px solid var(--border);
+        font-weight: 700;
+        color: var(--ink);
+        font-size: 1rem;
+        line-height: 1;
+        user-select: none;
+      }
+
+      .amount-input {
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        flex: 1;
+        padding: 0.65rem 0.7rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        outline: none;
+        appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+    }
+
+    .amount-hint {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .field-error {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #b91c1c;
+    }
+  }
+
   .row {
     display: flex;
     gap: 0.9rem;

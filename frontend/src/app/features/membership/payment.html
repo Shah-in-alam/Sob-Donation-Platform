@@ -1,7 +1,7 @@
 <div class="checkout">
   <aside class="checkout-summary">
     <h3>Supporter membership</h3>
-    <p class="amount">&euro;10 <span>/ month</span></p>
+    <p class="amount">&euro;{{ amount }} <span>/ month</span></p>
     <ul>
       <li>Step tracking and streaks</li>
       <li>Individual and team leaderboards</li>
@@ -17,6 +17,25 @@
     @if (error()) {
       <div class="alert">{{ error() }}</div>
     }
+
+    <label class="amount-label">
+      Monthly contribution
+      <div class="amount-input-wrap">
+        <span class="currency-prefix">&euro;</span>
+        <input
+          type="number"
+          formControlName="amount"
+          min="10"
+          step="1"
+          inputmode="numeric"
+          class="amount-input"
+        />
+      </div>
+      <span class="amount-hint">Suggested minimal contribution: €10</span>
+      @if (form.controls.amount.invalid && form.controls.amount.touched) {
+        <span class="field-error">Minimum contribution is €10.</span>
+      }
+    </label>
 
     <label>
       Cardholder name
@@ -40,7 +59,7 @@
     </div>
 
     <button type="submit" class="btn-primary pay-btn" [disabled]="processing()">
-      {{ processing() ? 'Processing…' : 'Pay €10' }}
+      {{ processing() ? 'Processing…' : 'Pay €' + amount }}
     </button>
     <p class="secure">Secured payment</p>
   </form>
