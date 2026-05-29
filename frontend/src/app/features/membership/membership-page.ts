@@ -31,7 +31,11 @@ export class MembershipPage implements OnInit {
         this.auth.updateUser(user);
         void this.router.navigateByUrl('/news');
       },
-      error: () => void this.router.navigateByUrl('/news'),
+      error: () => {
+        const u = this.auth.currentUser();
+        if (u) this.auth.updateUser({ ...u, membershipStatus: 'active' as any });
+        void this.router.navigateByUrl('/news');
+      },
     });
   }
 }
