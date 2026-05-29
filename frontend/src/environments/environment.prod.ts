@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://YOUR_BACKEND_URL/api',
+  apiUrl: 'https://sob-supporters-api.vercel.app/api',
 };
