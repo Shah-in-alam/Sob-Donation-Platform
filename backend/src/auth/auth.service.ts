@@ -6,7 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { ClubsService } from '../clubs/clubs.service';
+import { MembershipService } from '../membership/membership.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
@@ -16,7 +16,7 @@ import { RegisterDto } from './dto/register.dto';
 export class AuthService {
   constructor(
     private readonly users: UsersService,
-    private readonly clubs: ClubsService,
+    private readonly membership: MembershipService,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
   ) {}
@@ -27,17 +27,15 @@ export class AuthService {
       throw new ConflictException('Email already registered');
     }
 
-    const club = dto.favoriteClubId
-      ? await this.clubs.findById(dto.favoriteClubId)
-      : null;
     const passwordHash = await bcrypt.hash(dto.password, 12);
     const user = await this.users.create({
       email: dto.email,
       passwordHash,
       name: dto.name,
-      favoriteClub: club,
+      favoriteClub: null,
     });
-    return this.buildAuthResponse(user);
+    const activated = await this.membership.activate(user.id);
+    return this.buildAuthResponse(activated as User);
   }
 
   async login(dto: LoginDto) {

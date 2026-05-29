@@ -31,7 +31,7 @@ export class Register {
     this.error.set(null);
 
     this.auth.register(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigateByUrl('/membership'),
+      next: () => this.router.navigateByUrl('/news'),
       error: (err) => {
         this.error.set(
           err?.error?.message ?? 'Registration failed. Please try again.',
