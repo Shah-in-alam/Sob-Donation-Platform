@@ -16,23 +16,22 @@ export class MembershipPage implements OnInit {
   private readonly router = inject(Router);
 
   ngOnInit(): void {
-    // Already a supporter? Skip straight to the dashboard.
     if (this.auth.currentUser()?.membershipStatus === 'active') {
-      void this.router.navigateByUrl('/dashboard');
+      void this.router.navigateByUrl('/news');
     }
   }
 
   onPaid(): void {
-    void this.router.navigateByUrl('/dashboard');
+    void this.router.navigateByUrl('/news');
   }
 
   skip(): void {
     this.membership.activate().subscribe({
       next: (user) => {
         this.auth.updateUser(user);
-        void this.router.navigateByUrl('/dashboard');
+        void this.router.navigateByUrl('/news');
       },
-      error: () => void this.router.navigateByUrl('/dashboard'),
+      error: () => void this.router.navigateByUrl('/news'),
     });
   }
 }

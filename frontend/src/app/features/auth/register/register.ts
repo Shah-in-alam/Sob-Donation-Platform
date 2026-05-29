@@ -46,7 +46,7 @@ export class Register {
     const payload = favoriteClubId ? { ...rest, favoriteClubId } : rest;
 
     this.auth.register(payload).subscribe({
-      next: () => this.router.navigateByUrl('/dashboard'),
+      next: () => this.router.navigateByUrl('/membership'),
       error: (err) => {
         this.error.set(
           err?.error?.message ?? 'Registration failed. Please try again.',

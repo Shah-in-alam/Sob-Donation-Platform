@@ -29,7 +29,7 @@ export class Login {
     this.loading.set(true);
     this.error.set(null);
     this.auth.login(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigateByUrl('/dashboard'),
+      next: () => this.router.navigateByUrl('/news'),
       error: (err) => {
         this.error.set(err?.error?.message ?? 'Login failed. Please try again.');
         this.loading.set(false);

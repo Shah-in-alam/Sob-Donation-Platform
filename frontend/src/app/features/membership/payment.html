@@ -1,66 +1,116 @@
 <div class="checkout">
   <aside class="checkout-summary">
     <h3>Supporter membership</h3>
-    <p class="amount">&euro;{{ amount }} <span>/ month</span></p>
-    <ul>
-      <li>Step tracking and streaks</li>
-      <li>Individual and team leaderboards</li>
-      <li>Monthly challenges</li>
-      <li>Personal impact reports</li>
-    </ul>
-    <p class="cancel">Cancel anytime.</p>
+
+    <div class="mode-tabs">
+      <button
+        type="button"
+        class="mode-tab"
+        [class.active]="mode() === 'monthly'"
+        (click)="setMode('monthly')"
+      >Monthly</button>
+      <button
+        type="button"
+        class="mode-tab"
+        [class.active]="mode() === 'once'"
+        (click)="setMode('once')"
+      >One-time</button>
+    </div>
+
+    @if (mode() === 'monthly') {
+      <p class="amount">&euro;10 <span>/ month</span></p>
+      <ul>
+        <li>Latest news from SOB</li>
+        <li>Upcoming events</li>
+        <li>Monthly impact reports</li>
+        <li>Cancel anytime</li>
+      </ul>
+    } @else {
+      <p class="amount-once">Any amount</p>
+      <p class="once-desc">Make a one-time contribution to Special Olympics Belgium. Scan the QR code with your banking app.</p>
+    }
   </aside>
 
-  <form class="checkout-form" [formGroup]="form" (ngSubmit)="pay()">
-    <p class="demo-note">Demo checkout — this is a prototype and no real payment is processed.</p>
+  @if (mode() === 'monthly') {
+    <form class="checkout-form" [formGroup]="form" (ngSubmit)="pay()">
+      <p class="demo-note">Demo checkout — this is a prototype and no real payment is processed.</p>
 
-    @if (error()) {
-      <div class="alert">{{ error() }}</div>
-    }
+      @if (error()) {
+        <div class="alert">{{ error() }}</div>
+      }
 
-    <label class="amount-label">
-      Monthly contribution
-      <div class="amount-input-wrap">
+      <label class="amount-label">
+        Monthly contribution
+        <div class="amount-input-wrap">
+          <span class="currency-prefix">&euro;</span>
+          <input
+            type="number"
+            formControlName="amount"
+            min="10"
+            step="1"
+            inputmode="numeric"
+            class="amount-input"
+          />
+        </div>
+        <span class="amount-hint">Suggested minimal contribution: €10</span>
+        @if (form.controls.amount.invalid && form.controls.amount.touched) {
+          <span class="field-error">Minimum contribution is €10.</span>
+        }
+      </label>
+
+      <label>
+        Cardholder name
+        <input type="text" formControlName="cardName" placeholder="Name on card" autocomplete="cc-name" />
+      </label>
+
+      <label>
+        Card number
+        <input type="text" formControlName="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="cc-number" />
+      </label>
+
+      <div class="row">
+        <label>
+          Expiry
+          <input type="text" formControlName="expiry" placeholder="MM/YY" autocomplete="cc-exp" />
+        </label>
+        <label>
+          CVC
+          <input type="text" formControlName="cvc" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
+        </label>
+      </div>
+
+      <button type="submit" class="btn-primary pay-btn" [disabled]="processing()">
+        {{ processing() ? 'Processing…' : 'Pay €' + amount }}
+      </button>
+      <p class="secure">Secured payment</p>
+    </form>
+  } @else {
+    <div class="qr-panel">
+      <p class="qr-label">Enter amount</p>
+      <div class="qr-amount-wrap">
         <span class="currency-prefix">&euro;</span>
         <input
           type="number"
-          formControlName="amount"
-          min="10"
+          [value]="oneTimeAmount()"
+          min="1"
           step="1"
           inputmode="numeric"
-          class="amount-input"
+          class="qr-amount-input"
+          (input)="updateOneTimeAmount($any($event.target).value)"
         />
       </div>
-      <span class="amount-hint">Suggested minimal contribution: €10</span>
-      @if (form.controls.amount.invalid && form.controls.amount.touched) {
-        <span class="field-error">Minimum contribution is €10.</span>
-      }
-    </label>
 
-    <label>
-      Cardholder name
-      <input type="text" formControlName="cardName" placeholder="Name on card" autocomplete="cc-name" />
-    </label>
+      <div class="qr-box">
+        @if (qrDataUrl()) {
+          <img [src]="qrDataUrl()" alt="Payment QR code" class="qr-img" />
+        }
+      </div>
 
-    <label>
-      Card number
-      <input type="text" formControlName="cardNumber" placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="cc-number" />
-    </label>
+      <p class="qr-hint">
+        Open your banking app, choose <strong>scan QR</strong>, and scan the code above to donate <strong>&euro;{{ oneTimeAmount() }}</strong> to Special Olympics Belgium.
+      </p>
 
-    <div class="row">
-      <label>
-        Expiry
-        <input type="text" formControlName="expiry" placeholder="MM/YY" autocomplete="cc-exp" />
-      </label>
-      <label>
-        CVC
-        <input type="text" formControlName="cvc" placeholder="123" inputmode="numeric" autocomplete="cc-csc" />
-      </label>
+      <p class="qr-ref">Ref: SOB Supporter Donation</p>
     </div>
-
-    <button type="submit" class="btn-primary pay-btn" [disabled]="processing()">
-      {{ processing() ? 'Processing…' : 'Pay €' + amount }}
-    </button>
-    <p class="secure">Secured payment</p>
-  </form>
+  }
 </div>
