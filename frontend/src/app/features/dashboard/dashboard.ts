@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/auth/auth.service';
 
@@ -37,7 +36,7 @@ export interface FutureEvent {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DecimalPipe],
+  imports: [],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

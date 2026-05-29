@@ -7,6 +7,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   selector: 'app-register',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
+  styleUrl: './register.scss',
 })
 export class Register {
   private readonly fb = inject(FormBuilder);
@@ -15,6 +16,7 @@ export class Register {
 
   readonly error = signal<string | null>(null);
   readonly loading = signal(false);
+  readonly selectedAmount = signal(10);
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -30,8 +32,9 @@ export class Register {
     this.loading.set(true);
     this.error.set(null);
 
+    sessionStorage.setItem('sob_donation_amount', String(this.selectedAmount()));
     this.auth.register(this.form.getRawValue()).subscribe({
-      next: () => this.router.navigateByUrl('/membership'),
+      next: () => this.router.navigateByUrl('/membership', { state: { justRegistered: true } }),
       error: (err) => {
         this.error.set(
           err?.error?.message ?? 'Registration failed. Please try again.',

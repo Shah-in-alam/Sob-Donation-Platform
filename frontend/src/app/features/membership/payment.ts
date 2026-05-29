@@ -2,7 +2,6 @@ import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angula
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MembershipService } from '../../core/api/membership.service';
 import { AuthService } from '../../core/auth/auth.service';
-import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-payment',
@@ -19,12 +18,9 @@ export class Payment implements OnInit {
 
   readonly processing = signal(false);
   readonly error = signal<string | null>(null);
-  readonly mode = signal<'monthly' | 'once'>('monthly');
-  readonly oneTimeAmount = signal(25);
-  readonly qrDataUrl = signal<string>('');
 
   readonly form = this.fb.nonNullable.group({
-    amount: [10, [Validators.required, Validators.min(10)]],
+    amount: [10, [Validators.required, Validators.min(1)]],
     cardName: ['', [Validators.required, Validators.minLength(2)]],
     cardNumber: ['', [Validators.required, Validators.pattern(/^[0-9 ]{12,23}$/)]],
     expiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
@@ -36,28 +32,13 @@ export class Payment implements OnInit {
   }
 
   ngOnInit(): void {
-    this.generateQr();
-  }
-
-  setMode(m: 'monthly' | 'once'): void {
-    this.mode.set(m);
-    if (m === 'once') this.generateQr();
-  }
-
-  updateOneTimeAmount(val: string): void {
-    const n = parseInt(val, 10);
-    if (!isNaN(n) && n > 0) {
-      this.oneTimeAmount.set(n);
-      this.generateQr();
+    const saved = sessionStorage.getItem('sob_donation_amount');
+    if (saved) {
+      const n = parseInt(saved, 10);
+      if (!isNaN(n) && n > 0) {
+        this.form.controls.amount.setValue(n);
+      }
     }
-  }
-
-  private generateQr(): void {
-    const amount = this.oneTimeAmount();
-    const ref = `SOB-${Date.now()}`;
-    const payload = `BCD\n002\n1\nSCT\nGEBABEBB\nSpecial Olympics Belgium\nBE81001205237124\nEUR${amount}\n\n${ref}\nSOB Supporter Donation`;
-    QRCode.toDataURL(payload, { width: 240, margin: 2, color: { dark: '#1a1a2e', light: '#ffffff' } })
-      .then(url => this.qrDataUrl.set(url));
   }
 
   pay(): void {
@@ -73,6 +54,7 @@ export class Payment implements OnInit {
         next: () =>
           this.auth.loadProfile().subscribe(() => {
             this.processing.set(false);
+            sessionStorage.removeItem('sob_donation_amount');
             this.paid.emit();
           }),
         error: () => {

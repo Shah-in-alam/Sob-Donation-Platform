@@ -1,245 +1,72 @@
-.checkout {
-  display: grid;
-  grid-template-columns: 1fr 1.25fr;
-  max-width: 760px;
-  margin: 1rem auto 2rem;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-}
-
-.checkout-summary {
-  background: var(--brand);
-  color: #fff;
-  padding: 2rem 1.75rem;
-
-  h3 {
-    margin: 0 0 1rem;
-    color: #fff;
-  }
-
-  .amount {
-    font-size: 2.1rem;
-    font-weight: 800;
-    margin: 0 0 1.25rem;
-    span {
-      font-size: 1rem;
-      font-weight: 600;
-      opacity: 0.85;
-    }
-  }
-
-  .amount-once {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin: 0 0 0.75rem;
-    color: #fff;
-  }
-
-  .once-desc {
-    font-size: 0.88rem;
-    opacity: 0.9;
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  ul {
-    margin: 0 0 1.25rem;
-    padding-left: 1.1rem;
-    li {
-      margin-bottom: 0.4rem;
-    }
-  }
-
-  .cancel {
-    margin: 0;
-    opacity: 0.85;
-    font-size: 0.9rem;
-  }
-}
-
-.mode-tabs {
-  display: flex;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  padding: 3px;
-  margin-bottom: 1.25rem;
-  gap: 3px;
-}
-
-.mode-tab {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.45rem 0.5rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-
-  &.active {
-    background: #fff;
-    color: var(--brand);
-  }
-
-  &:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-  }
-}
-
-.checkout-form {
+.payment-box {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  padding: 2rem 1.75rem;
+  gap: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 2rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.07);
+  text-align: left;
+}
 
-  .demo-note {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--muted);
-    background: var(--bg-alt);
-    border: 1px dashed var(--border);
-    padding: 0.55rem 0.7rem;
-    border-radius: 6px;
-  }
+.demo-note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--bg-alt);
+  border: 1px dashed var(--border);
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+}
 
-  .alert {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #b91c1c;
-    padding: 0.6rem 0.8rem;
-    border-radius: 8px;
-    font-size: 0.88rem;
-  }
+.alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
 
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.92rem;
 
   input {
-    padding: 0.65rem 0.7rem;
+    padding: 0.7rem 0.85rem;
     border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 1rem;
     font-family: inherit;
-  }
+    font-weight: 400;
+    transition: border-color 0.15s, box-shadow 0.15s;
 
-  input:focus {
-    outline: none;
-    border-color: var(--brand);
-    box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
-  }
-
-  .amount-label {
-    .amount-input-wrap {
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: border-color 0.15s, box-shadow 0.15s;
-
-      &:focus-within {
-        border-color: var(--brand);
-        box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
-      }
-
-      .currency-prefix {
-        padding: 0.65rem 0.75rem;
-        background: var(--bg-alt);
-        border-right: 1px solid var(--border);
-        font-weight: 700;
-        color: var(--ink);
-        font-size: 1rem;
-        line-height: 1;
-        user-select: none;
-      }
-
-      .amount-input {
-        border: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        flex: 1;
-        padding: 0.65rem 0.7rem;
-        font-size: 1.1rem;
-        font-weight: 700;
-        outline: none;
-        appearance: textfield;
-
-        &::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-      }
+    &:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
     }
-
-    .amount-hint {
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: var(--muted);
-    }
-
-    .field-error {
-      font-size: 0.8rem;
-      font-weight: 400;
-      color: #b91c1c;
-    }
-  }
-
-  .row {
-    display: flex;
-    gap: 0.9rem;
-    label {
-      flex: 1;
-    }
-  }
-
-  .pay-btn {
-    margin-top: 0.5rem;
-    width: 100%;
-  }
-
-  .secure {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.8rem;
-    margin: 0.25rem 0 0;
   }
 }
 
-/* ── QR one-time panel ── */
-.qr-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem 1.75rem;
-  gap: 1rem;
+.field-error {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #b91c1c;
 }
 
-.qr-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--ink);
-  align-self: flex-start;
-  margin: 0;
-}
-
-.qr-amount-wrap {
+.amount-wrap {
   display: flex;
   align-items: center;
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
-  width: 100%;
   transition: border-color 0.15s, box-shadow 0.15s;
 
   &:focus-within {
@@ -247,27 +74,36 @@
     box-shadow: 0 0 0 3px rgba(226, 0, 26, 0.12);
   }
 
-  .currency-prefix {
+  .currency {
     padding: 0.7rem 0.85rem;
     background: var(--bg-alt);
     border-right: 1px solid var(--border);
     font-weight: 700;
     color: var(--ink);
-    font-size: 1.1rem;
     user-select: none;
+  }
+
+  .per-month {
+    padding: 0.7rem 0.85rem;
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+    white-space: nowrap;
   }
 }
 
-.qr-amount-input {
-  border: none;
+.amount-input {
   flex: 1;
-  padding: 0.7rem 0.8rem;
-  font-size: 1.4rem;
-  font-weight: 800;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.7rem 0.85rem;
+  font-size: 1.15rem;
+  font-weight: 700;
   font-family: inherit;
   outline: none;
   appearance: textfield;
-  color: var(--ink);
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -276,40 +112,33 @@
   }
 }
 
-.qr-box {
-  background: #fff;
-  border: 2px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem;
+.row {
+  display: flex;
+  gap: 0.9rem;
+
+  .field { flex: 1; }
+}
+
+.pay-btn {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.9rem;
+  font-size: 1rem;
+}
+
+.secure {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.qr-img {
-  width: 200px;
-  height: 200px;
-  display: block;
-  border-radius: 4px;
-}
-
-.qr-hint {
-  font-size: 0.85rem;
-  color: var(--ink);
+  gap: 0.35rem;
   text-align: center;
-  line-height: 1.55;
-  margin: 0;
-}
-
-.qr-ref {
-  font-size: 0.75rem;
   color: var(--muted);
+  font-size: 0.8rem;
   margin: 0;
 }
 
-@media (max-width: 640px) {
-  .checkout {
-    grid-template-columns: 1fr;
+@media (max-width: 520px) {
+  .payment-box {
+    padding: 1.5rem 1.25rem;
   }
 }

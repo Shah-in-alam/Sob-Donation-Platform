@@ -1,12 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth.service';
 import { MembershipService } from '../../core/api/membership.service';
 import { Payment } from './payment';
 
 @Component({
   selector: 'app-membership-page',
-  imports: [Payment],
+  imports: [Payment, FormsModule],
   templateUrl: './membership-page.html',
   styleUrl: './membership-page.scss',
 })
@@ -15,6 +16,9 @@ export class MembershipPage implements OnInit {
   private readonly membership = inject(MembershipService);
   private readonly router = inject(Router);
 
+  readonly showModal = signal(false);
+  readonly message = signal('');
+
   ngOnInit(): void {
     if (this.auth.currentUser()?.membershipStatus === 'active') {
       void this.router.navigateByUrl('/news');
@@ -22,6 +26,10 @@ export class MembershipPage implements OnInit {
   }
 
   onPaid(): void {
+    this.showModal.set(true);
+  }
+
+  closeModal(): void {
     void this.router.navigateByUrl('/news');
   }
 
@@ -29,12 +37,10 @@ export class MembershipPage implements OnInit {
     this.membership.activate().subscribe({
       next: (user) => {
         this.auth.updateUser(user);
-        void this.router.navigateByUrl('/news');
+        this.showModal.set(true);
       },
       error: () => {
-        const u = this.auth.currentUser();
-        if (u) this.auth.updateUser({ ...u, membershipStatus: 'active' as any });
-        void this.router.navigateByUrl('/news');
+        this.showModal.set(true);
       },
     });
   }

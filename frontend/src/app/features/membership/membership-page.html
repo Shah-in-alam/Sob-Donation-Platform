@@ -2,12 +2,78 @@
   <p class="eyebrow">Special Olympics Belgium</p>
   <h1>Become a supporter</h1>
   <p class="lead">
-    Complete your membership to unlock news, events and your impact as a supporter.
+    Your contribution helps athletes discover their potential, build confidence, and inspire inclusion.
   </p>
+
+  <div class="impact-bar">
+    <div class="impact-item">
+      <span>Funds athlete equipment &amp; training</span>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-item">
+      <span>Supports inclusion programmes</span>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-item">
+      <span>Reaches athletes across Belgium</span>
+    </div>
+  </div>
+
+  <p class="min-hint">Suggested minimum: <strong>€10 / month</strong> — you can always give more.</p>
 
   <app-payment (paid)="onPaid()" />
 
   <p class="skip-hint">
-    <button type="button" class="link-btn" (click)="skip()">Skip for now</button>
+    <button type="button" class="link-btn" (click)="skip()">Skip for now — continue without donating</button>
   </p>
 </section>
+
+@if (showModal()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+      <div class="confetti" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <h2 class="ty-title">
+        Thank you for joining the <span class="brand-red">SOB</span> community and supporting athletes!
+      </h2>
+      <p class="ty-sub">Your support helps athletes discover their potential, build confidence, and inspire inclusion.</p>
+
+      <div class="message-section">
+        <p class="message-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          Do you want to leave a message for our athletes?
+        </p>
+        <p class="message-hint">Your message will be displayed during the next games event — your words of encouragement can make a big difference.</p>
+        <textarea
+          class="message-input"
+          placeholder="Write your message here…"
+          maxlength="500"
+          [(ngModel)]="message"
+          rows="4"
+        ></textarea>
+        <p class="char-count">{{ message().length }} / 500</p>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-skip-msg" (click)="closeModal()">I don't want to leave a message</button>
+        <button type="button" class="btn-send" (click)="closeModal()">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          Send message
+        </button>
+      </div>
+
+      <p class="modal-footer">
+        Thank you for being part of a movement that changes lives.<br>
+        <strong class="brand-red">Together, we are #StrongerTogether.</strong>
+      </p>
+    </div>
+  </div>
+}

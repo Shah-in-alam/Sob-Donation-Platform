@@ -1,31 +1,78 @@
-<div class="auth-card">
-  <h2>Become a supporter</h2>
-  <p class="sub">Create your account to get started.</p>
+<div class="register-wrap">
 
-  @if (error()) {
-    <div class="alert">{{ error() }}</div>
-  }
+  <!-- Left: plan summary -->
+  <aside class="plan-summary">
+    <p class="eyebrow">Special Olympics Belgium</p>
+    <h2>Become a supporter</h2>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label>
-      Full name
-      <input type="text" formControlName="name" autocomplete="name" />
-    </label>
-    <label>
-      Email
-      <input type="email" formControlName="email" autocomplete="email" />
-    </label>
-    <label>
-      Password
-      <input type="password" formControlName="password" autocomplete="new-password" />
-      <small>At least 8 characters.</small>
-    </label>
-    <button type="submit" class="btn-primary" [disabled]="loading()">
-      {{ loading() ? 'Creating account…' : 'Create account' }}
-    </button>
-  </form>
+    <p class="price">€{{ selectedAmount() }} <span>/ month</span></p>
+    <p class="price-hint">Suggested minimum €10 — choose any amount.</p>
 
-  <p class="switch">
-    Already have an account? <a routerLink="/login">Log in</a>
-  </p>
+    <div class="amount-chips">
+      @for (amt of [10, 15, 25]; track amt) {
+        <button
+          type="button"
+          class="amount-chip"
+          [class.selected]="selectedAmount() === amt"
+          (click)="selectedAmount.set(amt)"
+        >€{{ amt }}</button>
+      }
+    </div>
+
+    <div class="custom-amount-wrap">
+      <span class="currency-prefix">€</span>
+      <input
+        type="number"
+        class="custom-amount-input"
+        [value]="selectedAmount()"
+        min="1"
+        step="1"
+        inputmode="numeric"
+        placeholder="Other"
+        (input)="selectedAmount.set(+$any($event.target).value || 10)"
+      />
+      <span class="per-month">/ month</span>
+    </div>
+
+    <ul>
+      <li>Access to news &amp; updates</li>
+      <li>Messages from clubs and athletes</li>
+      <li>Upcoming events</li>
+      <li>Monthly impact reports</li>
+      <li>Cancel anytime</li>
+    </ul>
+  </aside>
+
+  <!-- Right: registration form -->
+  <div class="register-form-panel">
+    <h3>Create your account</h3>
+    <p class="sub">Fill in your details to get started.</p>
+
+    @if (error()) {
+      <div class="alert">{{ error() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        Full name
+        <input type="text" formControlName="name" autocomplete="name" placeholder="Your name" />
+      </label>
+      <label>
+        Email
+        <input type="email" formControlName="email" autocomplete="email" placeholder="you@example.com" />
+      </label>
+      <label>
+        Password
+        <input type="password" formControlName="password" autocomplete="new-password" placeholder="Min. 8 characters" />
+        <small>At least 8 characters.</small>
+      </label>
+
+      <button type="submit" class="btn-primary submit-btn" [disabled]="loading()">
+        {{ loading() ? 'Creating account…' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="switch">Already have an account? <a routerLink="/login">Log in</a></p>
+  </div>
+
 </div>
